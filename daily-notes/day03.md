@@ -191,3 +191,124 @@
     > 반면 `append()` 메서드는 어떤 타입의 객체든 리스트의 요소로 추가할 수 있습니다.
 
 ### 5.3 함수 고급
+
+-   튜플
+
+    -   함수와 함께 많이 사용되는 리스트와 비슷한 자료형으로, 리스트와 다른 점은 한번 결정된 요소는 바꿀 수 없음
+
+    ```python
+    tuple_data = (10, 20, 30)
+    tuple_data[0]
+    # 출력:
+    # 10
+    tuple_data[0] = 100
+    # 출력:
+    # TypeError: 'tuple' object does not support item assignment
+    ```
+
+    -   튜플은 내부 요소 변경이 불가능함
+    -   요소를 하나만 가지는 리스트 / 튜플
+        ```python
+        list_data = [10] # 요소를 하나만 가지는 리스트는 이런 형태로 생성함
+        tuple_data = (10,) # 컴마를 붙여야 튜플로 인식함
+        ```
+    -   괄호를 생략할 수 있음
+
+        ```python
+        tuple_data = 10, 20, 30
+        type(tuple_data)
+        print(tuple_data)
+        # 출력:
+        # <class 'tuple'>
+        # (10, 20, 30)
+        ```
+
+    -   변수 값 교환
+        ```python
+        a = 10
+        b = 20
+        a, b = b, a
+        print(a, b)
+        # 출력:
+        # 20 10
+        ```
+    -   튜플은 함수의 리턴에 많이 사용됨
+        -   함수에서 여러 개의 값을 리턴하고 할당할 수 있기 때문
+        ```python
+        def test():
+            return 10, 20
+        a, b = test()
+        print(a, b)
+        # 출력:
+        # 10 20
+        ```
+    -   튜플도 리스트처럼 +와 \* 연산자 등을 활용할 수 있으나, 리스트로 작성하는 것과 차이가 없어서 튜플을 사용하는 경우는 거의 없음
+        > `enumerate()` 함수와 `items()` 함수를 사용하면 반복 변수를 아래 코드처럼 입력할 수 있음<br>
+        > 이 때, i, value는 (i, value) 형태의 튜플에서 괄호를 제거한 형태
+        >
+        > ```python
+        > for i in value in enumerate([1,2,3,4,5,6]):
+        >     print(i, value)
+        > # i, value는 괄호 없는 튜플
+        >
+        > a, b = 97, 40
+        > divmod(a, b) # divmod() 함수는 몫과 나머지를 튜플로 리턴함
+        > x, y = divmod(a, b)
+        > print(x, y)
+        > # 출력:
+        > # 2 17
+        > ```
+
+-   람다
+    -   매개변수로 함수를 전달하기 위해 함수 구문을 작성하는 것이 번거롭고, 코드 공간 낭비라는 생각이 들 때 함수를 간단하고 쉽게 선언하는 방법
+    -   1회용 함수를 만들어야 할 때 많이 사용
+    - 함수의 매개변수로 함수 전달
+        - 함수의 매개변수에 사용하는 함수를 콜백 함수(callback function)라고 함
+        ```python
+        def call_10_times(func):
+            for i in range(10):
+                func()
+
+        def hello():
+            print("안녕하세요")
+
+        call_10_times(hello)
+        # 출력:
+        # 안녕하세요
+        # 안녕하세요
+        # ...
+        # 안녕하세요
+        ```
+    - 함수를 매개변수로 사용하는 대표적인 표준 함수로 `map()`, `filter()` 함수가 있음
+        - `map()` 함수
+            - 리스트의 요소를 함수에 넣고 리턴된 값으로 새로운 리스트를 구성해주는 함수
+        - `filter()` 함수
+            - 리스트의 요소를 함수에 넣고 리턴된 값이 True인 것으로, 새로운 리스트를 구성해주는 함수
+        - 예시
+            ```python
+            # 함수 선언
+            def power(item):
+                return item * item
+            def under_3(item):
+                return item < 3
+
+            # 변수 선언
+            list_input_a = [1, 2, 3, 4, 5]
+
+            # map() 함수 사용
+            output_a = map(power, list_input_a)
+            print(output_a)
+            print(list(output_a))
+
+            # filter() 함수 사용
+            output_b = filter(under_3, list_input_a)
+            print(output_b)
+            print(list(output_b))
+
+            # 출력:
+            # <map object at 0x000001E403921C88>
+            # [1, 4, 9, 16, 25]
+            # <filter object at 0x000001E403921C88>
+            # [1, 2]
+            ```
+        - `map()` 함수와 `filter()` 함수는 람다를 사용하여 간단하게 표현할 수 있음
