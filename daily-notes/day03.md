@@ -463,41 +463,43 @@
 
 ### 6.1 구문 오류와 예외
 
-- 오류
-    - 프로그램 실행 전에 발생하는 오류 : 구문 오류(syntax error)
-    - 프로그램 실행 중에 발생하는 오류 : 예외(exception) 또는 런타임 에러(runtime error)
-    
-    - 구문 오류
-        - 해결하지 않으면 프로그램이 실행되지 않음
-    - 예외 또는 런타임 에러
-        - 해결하지 않으면 프로그램이 중단됨
+-   오류
 
-- 기본 예외 처리
-    - 예외 처리(exception handling) 방법
-        - 조건문을 사용하는 방법
-            - 예외 처리 기본 문법
+    -   프로그램 실행 전에 발생하는 오류 : 구문 오류(syntax error)
+    -   프로그램 실행 중에 발생하는 오류 : 예외(exception) 또는 런타임 에러(runtime error)
+
+    -   구문 오류
+        -   해결하지 않으면 프로그램이 실행되지 않음
+    -   예외 또는 런타임 에러
+        -   해결하지 않으면 프로그램이 중단됨
+
+-   기본 예외 처리
+
+    -   예외 처리(exception handling) 방법
+        -   조건문을 사용하는 방법
+            -   예외 처리 기본 문법
                 ```python
                 if 조건문:
                     코드
                 ```
-    - try except 구문을 사용하는 방법
-        - 예외 처리 기본 문법
+    -   try except 구문을 사용하는 방법
+        -   예외 처리 기본 문법
             ```python
             try:
                 예외가 발생할 가능성이 있는 코드
             except:
                 예외가 발생했을 때 실행할 코드
             ```
-    - try except구문과 pass 키워드 조합하기
-        - 예외 처리 기본 문법
+    -   try except구문과 pass 키워드 조합하기
+        -   예외 처리 기본 문법
             ```python
             try:
                 예외가 발생할 가능성이 있는 코드
             except:
                 pass
             ```
-    - try except else 구문
-        - 예외 처리 기본 문법
+    -   try except else 구문
+        -   예외 처리 기본 문법
             ```python
             try:
                 예외가 발생할 가능성이 있는 코드
@@ -506,26 +508,28 @@
             else:
                 예외가 발생하지 않았을 때 실행할 코드
             ```
-    - finally 구문
-        - 예외 처리 기본 문법
+    -   finally 구문
+        -   예외 처리 기본 문법
             ```python
             try:
                 예외가 발생할 가능성이 있는 코드
             finally:
                 예외 발생 여부와 상관없이 항상 실행할 코드
             ```
-    - try, except, finally 구문의 조합
-        - 예외 처리 구문은 다음과 같은 규칙을 지켜야 함
-            - try 구문은 단독으로 사용할 수 없으며, 반드시 except 구문이나 finally 구문과 함께 사용해야 함
-            - else 구문은 반드시 except 구문 뒤에 사용해야 함
-        - 가능한 조합
-            - try + excpet
-            - try + ecpet + else
-            - try + except + finally
-            - try + except + else + finally
-            - try + finally
-    - try 구문 내부에서 return 키워드 사용하는 경우
-        - finally 구문은 반복문 또는 함수 내부에 있을 때 위력을 발휘
+    -   try, except, finally 구문의 조합
+        -   예외 처리 구문은 다음과 같은 규칙을 지켜야 함
+            -   try 구문은 단독으로 사용할 수 없으며, 반드시 except 구문이나 finally 구문과 함께 사용해야 함
+            -   else 구문은 반드시 except 구문 뒤에 사용해야 함
+        -   가능한 조합
+            -   try + excpet
+            -   try + ecpet + else
+            -   try + except + finally
+            -   try + except + else + finally
+            -   try + finally
+    -   try 구문 내부에서 return 키워드 사용하는 경우
+
+        -   finally 구문은 반복문 또는 함수 내부에 있을 때 위력을 발휘
+
             ```python
             def test():
                 print("test() 함수의 첫 줄")
@@ -548,9 +552,13 @@
             # try 구문 실행
             # finally 구문 실행
             ```
-        - 함수 내부에서 파일 처리 코드를 깔끔하게 만들고 싶을 때 finally 구문을 활용하는 경우가 많음
-    - 반복문과 함께 사용하는 경우
-        - finally 구문은 반복문에서 break로 빠져나오거나, continue로 처음으로 돌아가거나, return으로 함수를 빠져나오는 경우에도 실행됨
+
+        -   함수 내부에서 파일 처리 코드를 깔끔하게 만들고 싶을 때 finally 구문을 활용하는 경우가 많음
+
+    -   반복문과 함께 사용하는 경우
+
+        -   finally 구문은 반복문에서 break로 빠져나오거나, continue로 처음으로 돌아가거나, return으로 함수를 빠져나오는 경우에도 실행됨
+
             ```python
             print("프로그램 시작")
             while True:
@@ -574,16 +582,18 @@
 
 ### 6.2 예외 고급
 
-- 예외 객체(exception object)
-    - 예외가 발생했을 때 예외 객체를 사용해 예외에 대한 정보를 얻을 수 있음
+-   예외 객체(exception object)
+
+    -   예외가 발생했을 때 예외 객체를 사용해 예외에 대한 정보를 얻을 수 있음
         ```python
         try:
             예외가 발생할 가능성이 있는 코드
         except 예외의 종류 as 예외 객체를 활용할 변수 이름:
             예외가 발생했을 때 실행할 코드
         ```
-    - 처음 예외 객체를 사용할 때는 예외의 종류가 무엇인지 모르기에 `Exception`을 사용 (모든 예외의 어머니)
-    - 예외 구분하기
+    -   처음 예외 객체를 사용할 때는 예외의 종류가 무엇인지 모르기에 `Exception`을 사용 (모든 예외의 어머니)
+    -   예외 구분하기
+
         ```python
         list_number = [52, 273, 32, 103, 90]
 
@@ -608,7 +618,8 @@
         # <class 'IndexError'>
         # list index out of range
         ```
-    - except 구문 뒤에 예외의 종류를 입력해서 예외 구분할 수 있음
+
+    -   except 구문 뒤에 예외의 종류를 입력해서 예외 구분할 수 있음
         ```python
         try:
             예외가 발생할 가능성이 있는 코드
@@ -617,18 +628,18 @@
         except 예외의 종류B:
             예외가 발생했을 때 실행할 코드
         ```
-    - 예외를 구분할 때 각각의 except 구문 뒤에 예외 객체를 붙여 활용할 수도 있음
-        - `as 키워드` 사용
-        - `except IndexError as exception:` 형식으로 사용
-    - `except Exception as exception:`을 try except 구문에서 마지막에 사용하면 모든 예외를 처리할 수 있음
+    -   예외를 구분할 때 각각의 except 구문 뒤에 예외 객체를 붙여 활용할 수도 있음
+        -   `as 키워드` 사용
+        -   `except IndexError as exception:` 형식으로 사용
+    -   `except Exception as exception:`을 try except 구문에서 마지막에 사용하면 모든 예외를 처리할 수 있음
 
-- raise 키워드
-    - 예외를 강제로 발생시키는 구문
-    - 예외 객체를 직접 만들어서 발생시키는 것도 가능
-    - `raise 예외 객체` 형식으로 사용
-    - 예시
+-   raise 키워드
+    -   예외를 강제로 발생시키는 구문
+    -   예외 객체를 직접 만들어서 발생시키는 것도 가능
+    -   `raise 예외 객체` 형식으로 사용
+    -   예시
         ```python
         # NotImplementedError는 아직 구현되지 않은 부분을 표시할 때 사용하는 예외
         # 주로 추상 메서드나 향후 구현 예정인 기능을 표시할 때 사용함
         raise NotImplementedError
-        ```        
+        ```
