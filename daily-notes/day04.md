@@ -1,6 +1,6 @@
 # 2025-03-25
 
-## Chap7 모듈
+## Chap07 모듈
 
 ### 7.1 표준 모듈
 
@@ -183,4 +183,358 @@
 
 ### 7.3 모듈 만들기
 
-- 
+-   모듈 내부에 변수와 함수를 넣어 모듈을 만들 수 있음
+-   `__name__ == "__main__"`
+
+    -   `__name__`은 Python에서 현재 모듈의 이름을 담고 있는 특별한 변수
+    -   모듈이 직접 실행될 때는 `"__main__"`이라는 값을 가지고, 다른 모듈에서 import될 때는 해당 모듈의 파일명(확장자 제외)을 값으로 가짐
+    -   이를 통해 모듈이 직접 실행되는지 아니면 다른 모듈에서 import되는지 구분할 수 있음
+    -   프로그램의 진입점을 엔트리 포인트(entry point) 또는 메인(main)이라고 부름
+    -   활용 예시
+
+        ```python
+        # test_module.py 파일
+        PI = 3.141592
+
+        def number_input():
+            output = input("숫자를 입력해주세요: ")
+            return float(output)
+
+        def get_circumference(radius):
+            return 2 * PI * radius
+
+        def get_circle_area(radius):
+            return PI * radius * radius
+
+        # 이 파일을 직접 실행할 때만 아래 코드가 실행됨
+        # 다른 파일에서 import할 때는 실행되지 않음
+        if __name__ == "__main__":
+            radius = number_input()
+            print(f"원의 둘레: {get_circumference(radius)}")
+            print(f"원의 넓이: {get_circle_area(radius)}")
+        ```
+
+-   패키지
+
+    -   pip : Python Package Index
+        -   패키지 관리 시스템
+        -   패키지는 모듈을 모아놓은 것
+
+-   `__init__.py`
+
+    -   패키지로 인식되게 하는 파일로, 해당 디렉토리가 패키지임을 Python에게 알려줌
+    -   Python 3.3부터는 없어도 패키지로 인식 됨
+
+-   텍스트 데이터
+
+    -   텍스트 데이터는 문자열로 표현되는 데이터
+    -   인코딩
+
+-   바이너리 데이터
+
+    -   바이너리 데이터는 이진 데이터로 표현되는 데이터
+    -
+
+-   인코딩 / 디코딩
+    -   인코딩 : 문자나 기호를 컴퓨터가 이해할 수 있는 형태(바이트 등)로 변환하는 과정
+    -   디코딩 : 인코딩된 데이터를 원래의 형태(사람이 읽을 수 있는 문자 등)로 변환하는 과정
+    -   대표적인 인코딩 방식: ASCII, UTF-8, UTF-16, EUC-KR 등
+    -   인터넷의 이미지 저장
+        ```python
+        from urllib import request
+        response = request.urlopen("https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
+        output = response.read()
+        print(output)
+        # 바이너리 모드로 파일 열기
+        file = open("google.png", "wb") # 바이너리 모드로 파일 열기, wb대신 w를 사용하면 텍스트 모드로 열리게 되어 바이너리 데이터를 쓸 때 인코딩 오류가 발생함
+        file.write(output)
+        file.close()
+        ```
+
+---
+
+## Chap08 클래스
+
+### 8.1 클래스의 기본
+
+-   C를 제외한 대부분의 프로그래밍 언어는 객체 지향 프로그래밍 언어(Object-Oriented Programming Language)
+-   클래스 기반의 객체 지향 프로그래밍 언어
+-   클래스(class)라는 것을 기반으로 객체(object)를 만들고, 객체를 우선으로 프로그램을 구성하는 프로그래밍
+
+-   객체
+
+    > -   추상화
+    >
+    > 프로그램에서 필요한 요소만을 사용해서 객체를 표현하는 것
+
+    -   객체 예시
+
+        ```python
+        student = [
+            {"name": "홍길동", "korean" : 87, "english" : 95, "math" : 75, "science" : 83},
+            {"name": "이영희", "korean" : 95, "english" : 90, "math" : 85, "science" : 78},
+            {"name": "박철수", "korean" : 75, "english" : 90, "math" : 80, "science" : 95},
+        ]
+
+        print("이름", "총점", "평균", sep="\t")
+        for student in students:
+            score_sum = student["korean"] + student["english"] + student["math"] + student["science"]
+            score_average = score_sum / 4
+            print(student["name"], score_sum, score_average, sep="\t")
+        ```
+
+    -   딕셔너리로 학생을 표현하고 리스트로 묶어 학생 정보를 표현
+    -   이처럼 여러 가지 속성을 가질 수 있는 대상을 객체(object)라고 함 (현재 코드에서는 학생이 객체)
+    -   객체 예시 2
+
+        ```python
+        def create_student(name, korean, english, math, science):
+            return {
+                "name": name,
+                "korean": korean,
+                "english": english,
+                "math": math,
+                "science": science
+            }
+
+        students = [
+            create_student("홍길동", 87, 95, 75, 83),
+            create_student("이영희", 95, 90, 85, 78),
+            create_student("박철수", 75, 90, 80, 95),
+        ]
+
+        print("이름", "총점", "평균", sep="\t")
+        for student in students:
+            score_sum = student["korean"] + student["english"] + student["math"] + student["science"]
+            score_average = score_sum / 4
+            print(student["name"], score_sum, score_average, sep="\t")
+        ```
+
+    -   객체 예시 3
+
+        ```python
+        def create_student(name, korean, english, math, science):
+            return {
+                "name": name,
+                "korean": korean,
+                "english": english,
+                "math": math,
+                "science": science
+            }
+
+        def student_get_sum(student):
+            return student["korean"] + student["english"] + student["math"] + student["science"]
+
+        def student_get_average(student):
+            return student_get_sum(student) / 4
+
+        def student_to_string(student):
+            return "{}\t{}\t{}".format(
+                student["name"],
+                student_get_sum(student),
+                student_get_average(student)
+            )
+
+        students = [
+            create_student("홍길동", 87, 95, 75, 83),
+            create_student("이영희", 95, 90, 85, 78),
+            create_student("박철수", 75, 90, 80, 95),
+        ]
+
+        print("이름", "총점", "평균", sep="\t")
+        for student in students:
+            print(student_to_string(student))
+        ```
+
+    -   위 처럼 객체와 관련된 코드를 분리할 수 있게 하는 것이 객체 지향 프로그래밍의 핵심
+    -   이를 위해 클래스(class)라는 구조를 사용
+
+    -   클래스 예시
+
+        ```python
+        class Student:
+            pass
+
+        student = Student()
+
+        student = [
+            Student(),
+            Student(),
+            Student(),
+        ]
+        ```
+
+    -   만들어진 클래스는 클래스 이름과 같은 함수(생성자)를 사용해서 객체를 만듦
+    -   `인스턴스 이름(변수 이름) = 클래스 이름()` 형식으로 사용
+    -   클래스 이름은 대문자로 시작하는 것이 관례
+    -   클래스를 기반으로 만들어진 객체를 인스턴스(instance)라고 함
+
+-   생성자
+
+    -   클래스 이름과 같은 함수를 생성자(constructor)라고 함
+        ```python
+        class 클래스 이름:
+            def __init__(self, 매개변수1, 매개변수2, ...):
+                pass
+        ```
+    -   클래스 내부의 함수는 첫 번째 매개변수로 반드시 self를 지정해야 함
+    -   self는 자기 자신을 나타내는 딕셔너리라고 생각하면 됨
+    -   다만, self가 가지고 있는 속성과 기능에 접근할 떄는 `self.<식별자>` 형식으로 접근
+        > self는 키워드가 아니라 단순한 식별자이므로, 변수 이름으로 활용해도 됨  
+        > 그러나 거의 모든 프로그래머가 self를 사용하므로, 기본 규칙을 따르는 것이 좋음
+    -   예시
+
+        ```python
+        class Student:
+            def __init__(self, name, korean, english, math, science):
+                self.name = name
+                self.korean = korean
+                self.english = english
+                self.math = math
+                self.science = science
+
+            students = [
+                Student("홍길동", 87, 95, 75, 83),
+                Student("이영희", 95, 90, 85, 78),
+                Student("박철수", 75, 90, 80, 95),
+            ]
+
+            # 인스턴스 속성에 접근
+            students[0].name
+            students[0].korean
+            students[0].english
+            students[0].math
+            students[0].science
+        ```
+
+    -   생성자(constructor) <> 소멸자(destructor)
+        -   인스턴스가 생성될 때 호출되는 함수 : 생성자
+        -   인스턴스가 소멸될 때 호출되는 함수 : 소멸자
+        -   생성자와 소멸자는 각각 `__init__()`과 `__del__(self)` 형식으로 사용
+        -   소멸자는 잘 사용하지 않음
+
+-   메소드
+
+    -   클래스가 가지고 있는 함수
+    -   메소드 선언 방식
+        ```python
+        class 클래스 이름:
+            def 메소드 이름(self, 매개변수1, 매개변수2, ...):
+                pass
+        ```
+
+    > C#, Java 등의 언어에서는 클래스의 함수를 '메소드'라고 부를 정도로 메소드라는 용어를 많이 사용함  
+    > 파이썬에서는 메소드라는 용어를 사용하지 않고, 함수(function)라는 용어를 사용함  
+    > 멤버 함수(member function), 인스턴스 함수(instance function) 등의 용어를 더 많이 사용함
+
+    -   클래스 내부에 함수(메소드) 선언 예시
+
+        ```python
+        class Student:
+            def __init__(self, name, korean, english, math, science):
+                self.name = name
+                self.korean = korean
+                self.english = english
+                self.math = math
+                self.science = science
+
+            def get_sum(self):
+                return self.korean + self.english + self.math + self.science
+
+            def get_average(self):
+                return self.get_sum() / 4
+
+            def to_string(self):
+                return "{}\t{}\t{}".format(
+                    self.name,
+                    self.get_sum(),
+                    self.get_average()
+                )
+
+            students = [
+                Student("홍길동", 87, 95, 75, 83),
+                Student("이영희", 95, 90, 85, 78),
+                Student("박철수", 75, 90, 80, 95),
+            ]
+
+            print("이름", "총점", "평균", sep="\t")
+            for student in students:
+                print(student.to_string())
+        ```
+
+### 8.2 클래스의 추가적인 구문
+
+-   클래스를 사용하는 것은 속성과 기능을 가진 객체를 만들겠다는 것
+-   어떤 클래스를 기반으로 그 속성과 기능을 물려받아 새로운 클래스를 만드는 상속
+-   상속 관계에 따라서 객체가 어떤 클래스를 기반으로 만들었는지 확인할 수 있게 해주는 isinstance() 함수
+-   파이썬이 기본적으로 제공하는 str() 함수 혹은 연산자를 사용해서 클래스의 특정 함수를 호출할 수 있게 해주는 기능 등
+
+-   어떤 클래스의 인스턴스인지 확인
+
+    -   `isinstance()` 함수는 첫 번째 매개변수에 객체(인스턴스), 두 번째 매개 변수에 클래스를 입력
+    -   `isinstance(인스턴스, 클래스)` 형식으로 사용
+        -   이 때, 인스턴스가 해당 클래스를 기반으로 만들어졌다면 True, 아니면 False를 반환
+    -   단순한 인스턴스 확인이라면 `type(인스턴스) == 클래스` 형식으로 사용해도 됨
+
+        -   다만, 상속을 사용할 때 다르게 동작함
+
+        ```python
+        # isinstance() 함수와 type() 함수의 차이 예시
+        class Animal:
+            pass
+
+        class Dog(Animal):  # Animal을 상속받는 Dog 클래스
+            pass
+
+        dog = Dog()  # Dog 클래스의 인스턴스 생성
+
+        # isinstance() 함수는 상속 관계를 고려함
+        print(isinstance(dog, Dog))     # True: dog는 Dog의 인스턴스
+        print(isinstance(dog, Animal))  # True: dog는 Animal을 상속받은 Dog의 인스턴스
+
+        # type() 함수는 정확한 클래스만 확인함
+        print(type(dog) == Dog)     # True: dog의 타입은 Dog
+        print(type(dog) == Animal)  # False: dog의 타입은 Animal이 아니라 Dog
+
+        # 따라서 상속 관계를 고려해야 할 때는 isinstance()를 사용하는 것이 적합함
+        ```
+
+-   클래스를 생성하고 리스트 내부에 객체들을 넣음, 반복을 적용했을 떄, 요소가 Student 클래스의 인스턴스인지, Teacher 클래서의 인스턴스인지 확인하고, 각각의 대상이 가지고 있는 적절한 함수를 호출하는 예제
+-   isinstance()함수를 사용하면 하나의 리스트로 여러 종류의 데이터를 다룰 수 있음
+
+    ```python
+    class Student:
+        def study(self):
+            print("공부를 합니다.")
+
+    class Teacher:
+        def teach(self):
+            print("학생을 가르칩니다.")
+
+    classroom = [Student(), Student(), Teacher(), Student(), Studnet()]
+
+    for person in classroom:
+        if isinstance(person, Student):
+            person.study()
+        elif isinstance(person, Teacher):
+            person.teach()
+    ```
+
+-   특수한 이름의 메소드 - `__str__()` 메소드 - 객체를 문자열로 변환할 수 있음
+    | 이름 | 영어 | 설명 |
+    |------|------|------|
+    | eq | equal | 객체가 같은지 비교할 때 호출되는 메소드 |
+    | ne | not equal | 객체가 다른지 비교할 때 호출되는 메소드 |
+    | gt | greater than | 객체가 큰지 비교할 때 호출되는 메소드 |
+    | ge | greater than or equal | 객체가 크거나 같은지 비교할 때 호출되는 메소드 |
+    | lt | less than | 객체가 작은지 비교할 때 호출되는 메소드 |
+    | le | less than or equal | 객체가 작거나 같은지 비교할 때 호출되는 메소드 |
+
+-   학생 성적 관리 예시: [compare_func.py](../implementations/compare_func.py)
+
+-   예외 처리
+
+    -   ==, !=, >, >=, <, <= 를 사용하면 비교 연산자가 아닌 메소드를 호출하게 됨
+    -   비교할 때 사용되는 자료형을 한정하고 싶다면 자료형을 한정하고 이외의 자료형을 사용할 때 예외를 발생시키는 방법을 사용할 수 있음
+
+-   클래스 변수와 메소드
