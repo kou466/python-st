@@ -1,5 +1,5 @@
 # 구현 파일 무시
 implementations/main.py
 
-# 캐시 파일 무시
-implementations/__pycache__/
+# 캐시 폴더 무시 (위치 관계없이 모든 캐시 폴더)
+__pycache__/
