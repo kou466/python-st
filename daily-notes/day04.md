@@ -538,3 +538,190 @@
     -   비교할 때 사용되는 자료형을 한정하고 싶다면 자료형을 한정하고 이외의 자료형을 사용할 때 예외를 발생시키는 방법을 사용할 수 있음
 
 -   클래스 변수와 메소드
+
+    -   인스터스가 속성과 기능을 가질 수도 있지만, 클래스가 속성(변수)과 기능(함수)을 가질 수도 있음
+    -   클래스 변수
+
+        ```python
+
+        # 선언
+        class 클래스 이름:
+            클래스 변수 = 값
+
+        # 접근
+        클래스 이름.클래스 변수
+        ```
+
+    -   예시
+
+        ```python
+        class Student:
+            count = 0
+
+            def __init__(self, name, korean, english, math, science):
+                self.name = name
+                self.korean = korean
+                self.english = english
+                self.math = math
+                self.science = science
+
+                # 클래스 변수 설정
+                Student.count += 1
+                print("{}번째 학생이 생성되었습니다.".format(Student.count))
+
+        students = [
+            Student("홍길동", 87, 95, 75, 83),
+            Student("이영희", 95, 90, 85, 78),
+            Student("박철수", 75, 90, 80, 95),
+        ]
+
+        print()
+        print("현재 생성된 총 학생 수는 {}명입니다.".format(Student.count))
+        ```
+
+    -   클래스 함수
+
+        ```python
+        class 클래스 이름:
+            @classmethod
+            def 클래스 함수 이름(cls, 매개변수1, 매개변수2, ...): # cls는 클래스 자신을 가리키는 매개변수
+                pass
+        ```
+
+        -   클래스 함수의 첫 번째 매개변수에는 클래스 자체가 들어가는데, 일반적으로 cls라는 이름의 변수로 선언
+        -   호출 : `클래스 이름.클래스 함수 이름(매개변수1, 매개변수2, ...)`
+
+        ```python
+        class Student:
+            count = 0
+            students = []
+
+            @classmethod
+            def print(cls): # Student 클래스에 print() 함수를 추가
+                print("--- 학생 목록 ---")
+                print("이름\t총점\t평균")
+                for student in cls.students: # Student.students 라고 해도 되지만, 매개변수로 받은 cls를 활용
+                    print(str(student))
+                print("---")
+
+            def __init__(self, name, korean, english, math, science):
+                self.name = name
+                self.korean = korean
+                self.english = english
+                self.math = math
+                self.science = science
+
+                Student.count += 1
+                Student.students.append(self)
+
+            def get_sum(self):
+                return self.korean + self.english + self.math + self.science
+
+            def get_average(self):
+                return self.get_sum() / 4
+
+            def __str__(self):
+                return "{}\t{}\t{}".format(
+                    self.name,
+                    self.get_sum(),
+                    self.get_average()
+                )
+
+        Student("홍길동", 87, 95, 75, 83)
+        Student("이영희", 95, 90, 85, 78)
+        Student("박철수", 75, 90, 80, 95)
+
+        Student.print()
+        ```
+
+-   가비지 컬렉터
+
+    -   `가비지 컬렉터(Garbage Collector)`는 더 이상 사용되지 않는 메모리를 자동으로 해제하는 시스템
+    -   `스왑(Swap)`은 메모리가 부족할 때 디스크 공간을 임시 메모리로 사용하는 기술
+
+-   프라이빗 변수와 게터/세터
+
+    -   프라이빗 변수
+        -   클래스 내부의 변수를 외부에서 접근하지 못하도록 할 떄 인스턴스 변수 이름을 `__<변수 이름>` 형태로 선언
+        -   `__`를 변수 이름 앞에 붙이면 클래스 내부에서만 접근 가능한 변수가 됨
+    -   게터 / 세터 (Getter / Setter)
+        -   게터(Getter)는 프라이빗 변수의 값을 읽는 메소드
+        -   세터(Setter)는 프라이빗 변수의 값을 설정하는 메소드
+    -   데코레이터를 사용한 게터/세터
+        -   변수 이름과 같은 함수를 정의하고 `@property`와 `@<게터 함수 이름>.setter`를 사용
+
+-   상속 (inheritance)
+
+    -   상속은 기존 클래스의 기능을 물려받아 새로운 클래스를 만드는 기법
+    -   상속을 통해 코드 재사용성을 높이고 유지보수가 용이해짐
+    -   부모 클래스(또는 슈퍼 클래스)의 속성과 메소드를 자식 클래스(또는 서브 클래스)가 물려받음
+    -   파이썬에서는 `class 자식클래스(부모클래스):` 형태로 상속을 구현
+    -   자식 클래스에서 부모 클래스의 메소드를 재정의하는 것을 메소드 오버라이딩(Overriding)이라고 함
+    -   부모 클래스의 메소드를 호출할 때는 `super().메소드명()` 형태로 사용
+
+    -   다중 상속(Multiple Inheritance)
+
+        -   파이썬은 여러 부모 클래스로부터 상속받을 수 있는 다중 상속을 지원
+        -   `class 자식클래스(부모클래스1, 부모클래스2, ...):` 형태로 구현
+        -   다중 상속 시 메소드 해석 순서(MRO, Method Resolution Order)를 따름
+        -   동일한 이름의 메소드가 여러 부모 클래스에 존재할 경우, 클래스 선언 시 먼저 명시된 부모 클래스의 메소드가 우선 적용됨
+        -   다중 상속은 복잡성을 증가시킬 수 있으므로 신중하게 사용해야 함
+
+    -   예시
+        ```python
+        # 부모 클래스 정의
+        class Animal:
+            def __init__(self, name):
+                self.name = name
+
+            def speak(self):
+                return "동물이 소리를 냅니다."
+
+            def introduce(self):
+                return f"저는 {self.name}입니다."
+
+        # 자식 클래스 정의 - Animal 클래스 상속
+        class Dog(Animal):
+            def speak(self):  # 메소드 오버라이딩
+                return "멍멍!"
+
+        class Cat(Animal):
+            def speak(self):  # 메소드 오버라이딩
+                return "야옹!"
+
+            def introduce(self):
+                # 부모 클래스의 메소드 호출
+                parent_intro = super().introduce()
+                return f"{parent_intro} 그리고 저는 고양이입니다."
+
+        # 객체 생성 및 사용
+        animal = Animal("동물")
+        dog = Dog("바둑이")
+        cat = Cat("나비")
+
+        print(animal.speak())  # 출력: 동물이 소리를 냅니다.
+        print(dog.speak())     # 출력: 멍멍!
+        print(cat.speak())     # 출력: 야옹!
+
+        print(animal.introduce())  # 출력: 저는 동물입니다.
+        print(dog.introduce())     # 출력: 저는 바둑이입니다.
+        print(cat.introduce())     # 출력: 저는 나비입니다. 그리고 저는 고양이입니다.
+        ```
+    -   예외 클래스 만들기
+
+        ```python
+        class CustomException(Exception):
+            def __init__(self, message="사용자 정의 예외가 발생했습니다."):
+                self.message = message
+                super().__init__(self.message)
+
+            def __str__(self):
+                return self.message
+
+        try:
+            raise CustomException("사용자 정의 예외 메시지")
+        except CustomException as e:
+            print(e)
+        ```
+
+    -   부모에 정의되어 있는 함수를 자식에서 다시 정의하는 것을 `재정의` 또는 `오버라이드(override)`라고 함
